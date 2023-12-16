@@ -53,7 +53,7 @@ You should now have one jar file (usually located at `./build/libs`) that works 
 ## Credits
 Special thanks to the maintainers of the following repositories:
 - [refraction-networking/utls](https://github.com/refraction-networking/utls)
-- [ooni/oohttp](https://github.com/ooni/oohttp)
+- [bogdanfinn/tls-client](https://github.com/bogdanfinn/tls-client)
 
 And the creators of the following websites:
 - https://tlsfingerprint.io/

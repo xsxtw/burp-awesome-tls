@@ -9,7 +9,6 @@ public class Settings {
     private final String httpTimeout = "HttpTimeout";
     private final String httpKeepAliveInterval = "HttpKeepAliveInterval";
     private final String idleConnTimeout = "IdleConnTimeout";
-    private final String tlsHandshakeTimeout = "TlsHandshakeTimeout";
 
     public static final String DEFAULT_ADDRESS = "127.0.0.1:8887";
     public static final String DEFAULT_HTTP_TIMEOUT = "30";
@@ -41,10 +40,6 @@ public class Settings {
 
         if (this.read(this.idleConnTimeout) == null) {
             this.write(this.idleConnTimeout, DEFAULT_IDLE_CONN_TIMEOUT);
-        }
-
-        if (this.read(this.tlsHandshakeTimeout) == null) {
-            this.write(this.tlsHandshakeTimeout, DEFAULT_TLS_HANDSHAKE_TIMEOUT);
         }
     }
 
@@ -98,34 +93,52 @@ public class Settings {
         this.write(this.idleConnTimeout, String.valueOf(idleConnTimeout));
     }
 
-    public int getTlsHandshakeTimeout() {
-        return Integer.parseInt(this.read(this.tlsHandshakeTimeout));
-    }
-
-    public void setTlsHandshakeTimeout(int tlsHandshakeTimeout) {
-        this.write(this.tlsHandshakeTimeout, String.valueOf(tlsHandshakeTimeout));
-    }
-
     public String[] getFingerprints() {
         return new String[]{
                 "Default",
-                "Chrome 102",
-                "Chrome 100",
-                "Chrome 96",
+                "Chrome 120",
+                "Chrome 117",
+                "Chrome 116 PSK PQ",
+                "Chrome 116 PSK",
+                "Chrome 112",
+                "Chrome 111",
+                "Chrome 110",
+                "Chrome 109",
+                "Chrome 108",
+                "Chrome 107",
+                "Chrome 106",
+                "Chrome 105",
+                "Chrome 104",
+                "Chrome 103",
+
+                "Firefox 117",
+                "Firefox 110",
+                "Firefox 108",
+                "Firefox 106",
                 "Firefox 105",
+                "Firefox 104",
                 "Firefox 102",
-                "Firefox 99",
-                "Edge 106",
-                "Edge 85",
+
+                "Opera 91",
+                "Opera 90",
+                "Opera 89",
+
                 "Safari 16.0",
-                "QQBrowser 11.1",
-                "iOS 14",
-                "iOS 13",
-                "iOS 12.1",
-                "Android 11",
-                "Randomized 0",
-                "Randomized-ALPN 0",
-                "Randomized-NoALPN 0",
+                "Safari 15.6.1",
+
+                "Safari ipad 15.6",
+
+                "Safari ios 16.0",
+                "Safari ios 15.6",
+                "Safari ios 15.5",
+
+                "OkHttp4 android 13",
+                "OkHttp4 android 12",
+                "OkHttp4 android 11",
+                "OkHttp4 android 10",
+                "OkHttp4 android 9",
+                "OkHttp4 android 8",
+                "OkHttp4 android 7",
         };
     }
 }

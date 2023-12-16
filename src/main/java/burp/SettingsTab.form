@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="burp.SettingsTab">
-  <grid id="27dc6" binding="panelMain" layout-manager="GridLayoutManager" row-count="17" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="panelMain" layout-manager="GridLayoutManager" row-count="15" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="964" height="650"/>
+      <xy x="20" y="20" width="964" height="550"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <vspacer id="6cc77">
         <constraints>
-          <grid row="16" column="2" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="14" column="2" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
       <component id="70a26" class="javax.swing.JLabel" binding="labelAddress">
@@ -99,25 +99,9 @@
           <toolTipText value="The maximum amount of time an idle (keep-alive) connection will remain idle before closing itself."/>
         </properties>
       </component>
-      <component id="e4f58" class="javax.swing.JLabel" binding="labelTlsHandshakeTimeout">
-        <constraints>
-          <grid row="13" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="TLS handshake timeout"/>
-        </properties>
-      </component>
-      <component id="2b2e5" class="javax.swing.JSpinner" binding="spinnerTlsHandshakeTimeout">
-        <constraints>
-          <grid row="14" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <toolTipText value="The maximum amount of time to wait for a TLS handshake."/>
-        </properties>
-      </component>
       <component id="da183" class="javax.swing.JButton" binding="buttonSave">
         <constraints>
-          <grid row="15" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="13" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Save all settings"/>

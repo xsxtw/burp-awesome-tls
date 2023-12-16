@@ -2,15 +2,13 @@ package server
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
+	http "github.com/bogdanfinn/fhttp"
+	tls "github.com/bogdanfinn/utls"
 	"io"
 	"net"
-	"strings"
-
+	"net/url"
 	"server/internal"
-
-	http "github.com/ooni/oohttp"
 )
 
 // DefaultAddress is the default listener address.
@@ -34,34 +32,45 @@ func StartServer(addr string) error {
 	}
 
 	m := http.NewServeMux()
-	m.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+	m.HandleFunc("/", func(w http.ResponseWriter, burpReq *http.Request) {
+		// TODO: fix req and res header order (Java side probably needs to specify the order now and the loc below probably doesn't work anymore because nothing actually sets the order)
 		http.EnableHeaderOrder(w)
 
-		configHeader := req.Header.Get(ConfigurationHeaderKey)
-		req.Header.Del(ConfigurationHeaderKey)
+		configHeader := burpReq.Header.Get(ConfigurationHeaderKey)
+		burpReq.Header.Del(ConfigurationHeaderKey)
 
-		config, err := internal.ParseTransportConfig(configHeader)
+		config, err := internal.NewTransportConfig(configHeader)
 		if err != nil {
 			writeError(w, err)
 			return
 		}
 
-		transport, err := internal.NewTransport(config)
+		client, err := internal.NewClient(config)
 		if err != nil {
 			writeError(w, err)
 			return
 		}
 
-		req.URL.Host = config.Host
-		req.URL.Scheme = config.Scheme
-		if strings.HasPrefix(string(config.Fingerprint), "Chrome") {
-			pHeaderOrder := []string{":method", ":authority", ":scheme", ":path"}
-			for _, pHeader := range pHeaderOrder {
-				req.Header.Add(http.PHeaderOrderKey, pHeader)
-			}
+		req := &http.Request{
+			URL: &url.URL{
+				Scheme:      config.Scheme,
+				Host:        config.Host,
+				Opaque:      burpReq.URL.Opaque,
+				User:        burpReq.URL.User,
+				Path:        burpReq.URL.Path,
+				RawPath:     burpReq.URL.RawPath,
+				OmitHost:    burpReq.URL.OmitHost,
+				ForceQuery:  burpReq.URL.ForceQuery,
+				RawQuery:    burpReq.URL.RawQuery,
+				Fragment:    burpReq.URL.Fragment,
+				RawFragment: burpReq.URL.RawFragment,
+			},
+			Method: burpReq.Method,
+			Header: burpReq.Header,
+			Body:   burpReq.Body,
 		}
 
-		res, err := transport.RoundTrip(req)
+		res, err := client.Do(req)
 		if err != nil {
 			writeError(w, err)
 			return
@@ -70,6 +79,7 @@ func StartServer(addr string) error {
 		defer res.Body.Close()
 
 		// Write the response (back to burp).
+		res.Header.Del("Content-Length")
 		for k := range res.Header {
 			vv := res.Header.Values(k)
 			for _, v := range vv {
@@ -79,8 +89,17 @@ func StartServer(addr string) error {
 
 		w.WriteHeader(res.StatusCode)
 
-		body, _ := io.ReadAll(res.Body)
-		w.Write(body)
+		body, err := io.ReadAll(res.Body)
+		if err != nil {
+			writeError(w, err)
+			return
+		}
+
+		_, err = w.Write(body)
+		if err != nil {
+			writeError(w, err)
+			return
+		}
 	})
 
 	s.Addr = addr

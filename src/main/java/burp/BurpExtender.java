@@ -58,7 +58,6 @@ public class BurpExtender implements IBurpExtender, IHttpListener, IExtensionSta
         transportConfig.HttpTimeout = this.settings.getHttpTimeout();
         transportConfig.HttpKeepAliveInterval = this.settings.getHttpKeepAliveInterval();
         transportConfig.IdleConnTimeout = this.settings.getIdleConnTimeout();
-        transportConfig.TlsHandshakeTimeout = this.settings.getTlsHandshakeTimeout();
         var goConfigJSON = this.gson.toJson(transportConfig);
         this.stdout.println("Using config: " + goConfigJSON);
 
